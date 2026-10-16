@@ -1,0 +1,11 @@
+Role,Department,Resource,Access_Level,Approval_Required,MFA_Required
+Developer,Engineering,Development_Server,Read_Write,Manager,Yes
+Developer,Engineering,Production_Server,No_Access,Manager+Security,Yes
+Senior Developer,Engineering,Production_Server,Read_Write,Manager+Security,Yes
+QA,Engineering,Test_Server,Read_Write,Manager,Yes
+QA,Engineering,Production_Server,Read_Only,Manager+Security,Yes
+DevOps,IT,Production_Server,Admin,Manager+Security,Yes
+Security_Admin,Security,Security_Console,Admin,Security_Manager,Yes
+HR,Human Resources,HR_System,Read_Write,HR_Manager,Yes
+Finance,Finance,Finance_System,Read_Write,Finance_Manager,Yes
+Employee,General,Company_Portal,Read,Manager,Yes

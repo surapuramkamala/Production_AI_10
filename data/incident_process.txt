@@ -1,0 +1,128 @@
+ENTERPRISE SECURITY INCIDENT RESPONSE PROCESS
+
+Document Type: Security Procedure
+Department: Information Security
+Document Owner: Security Operations Team
+Version: 1.0
+Access Level: Internal
+
+1. PURPOSE
+
+The purpose of this procedure is to provide a consistent process for identifying,
+containing, investigating, resolving, and learning from information security incidents.
+
+2. INCIDENT IDENTIFICATION
+
+Security incidents may be identified through security monitoring systems,
+employee reports, automated alerts, vulnerability assessments, or other
+security monitoring activities.
+
+When a potential incident is identified, the security team should record
+the available information and determine whether the event represents
+an actual or potential security incident.
+
+3. INITIAL ASSESSMENT
+
+The security team should evaluate the incident and determine its severity.
+
+The assessment should consider:
+
+- Systems affected
+- Information affected
+- Number of users affected
+- Business impact
+- Security impact
+- Potential regulatory requirements
+
+4. CONTAINMENT
+
+When an incident presents an immediate security risk, appropriate containment
+actions should be performed.
+
+Possible containment actions include:
+
+- Isolating affected systems
+- Disabling compromised accounts
+- Blocking malicious network traffic
+- Restricting access to affected resources
+
+Containment should be performed while preserving information required
+for investigation.
+
+5. ERADICATION
+
+After containment, the response team should identify and remove the cause
+of the incident.
+
+Activities may include:
+
+- Removing malicious software
+- Removing unauthorized accounts
+- Correcting vulnerable configurations
+- Applying security patches
+- Resetting compromised credentials
+
+6. RECOVERY
+
+After eradication, affected systems should be restored to normal operation.
+
+Recovery activities should include:
+
+- Validating system security
+- Monitoring restored systems
+- Confirming that vulnerabilities have been addressed
+- Restoring affected business services
+
+7. LESSONS LEARNED
+
+After the incident has been resolved, the response team should review
+the incident.
+
+The review should identify:
+
+- What happened
+- How the incident was detected
+- What actions were successful
+- What actions were unsuccessful
+- What improvements are required
+
+The results should be used to improve security controls and incident-response
+procedures.
+
+8. DOCUMENTATION
+
+Incident information should be documented throughout the response lifecycle.
+
+Documentation may include:
+
+- Incident identification time
+- Systems affected
+- Actions performed
+- People involved
+- Evidence collected
+- Recovery actions
+- Final resolution
+
+9. ESCALATION
+
+High-severity incidents should be escalated to appropriate security,
+technology, management, legal, or compliance teams based on the nature
+and impact of the incident.
+
+10. PROCESS SUMMARY
+
+The incident-response lifecycle is:
+
+Identification
+        ↓
+Assessment
+        ↓
+Containment
+        ↓
+Eradication
+        ↓
+Recovery
+        ↓
+Lessons Learned
+        ↓
+Process Improvement

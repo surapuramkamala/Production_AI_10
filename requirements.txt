@@ -1,0 +1,13 @@
+
+fastapi
+uvicorn[standard]
+python-dotenv
+openai
+faiss-cpu
+numpy
+pandas
+pypdf
+python-docx
+python-jose[cryptography]
+pwdlib[argon2]
+python-multipart

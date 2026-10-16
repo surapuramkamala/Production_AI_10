@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enterprise RAG Assistant</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f3f5f9;
+      color: #1f2937;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      background: #172554;
+      color: white;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .navbar h2 {
+      margin: 0;
+      font-size: 21px;
+    }
+
+    .navbar span {
+      font-size: 13px;
+      color: #cbd5e1;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 35px auto;
+      padding: 0 18px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+    }
+
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+
+    h1 {
+      font-size: 27px;
+      margin-bottom: 5px;
+    }
+
+    h2 {
+      font-size: 21px;
+    }
+
+    .subtitle {
+      color: #64748b;
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      font: inherit;
+      background: white;
+    }
+
+    input:focus, textarea:focus {
+      outline: 2px solid #bfdbfe;
+      border-color: #2563eb;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 115px;
+    }
+
+    button {
+      border: none;
+      border-radius: 7px;
+      padding: 12px 17px;
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    button:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .button-row button {
+      flex: 1;
+    }
+
+    .secondary {
+      background: #475569;
+    }
+
+    .secondary:hover {
+      background: #334155;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 7px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+    }
+
+    .message:empty {
+      display: none;
+    }
+
+    .info {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .error {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .success {
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    .answer-box {
+      padding: 17px;
+      border-radius: 8px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .source-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 12px;
+    }
+
+    .source-title {
+      font-weight: bold;
+      color: #1d4ed8;
+      overflow-wrap: anywhere;
+    }
+
+    .source-meta {
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .source-preview {
+      font-size: 14px;
+      margin-bottom: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .section-header button {
+      width: auto;
+    }
+
+    .footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 12px;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 15px 18px;
+      }
+
+      .navbar h2 {
+        font-size: 17px;
+      }
+
+      .container {
+        margin-top: 20px;
+        padding: 0 12px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .button-row {
+        flex-direction: column;
+      }
+
+      .button-row button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <h2>Enterprise RAG Assistant</h2>
+    <span>AI-powered document search</span>
+  </header>
+
+  <main class="container">
+    <!-- Login and registration -->
+    <section id="authCard" class="card">
+      <h1>Welcome</h1>
+      <p class="subtitle">
+        Sign in or create an account to access your document assistant.
+      </p>
+
+      <form id="authForm">
+        <label for="email">Email address</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="username"
+          placeholder="you@example.com"
+          maxlength="254"
+          required
+        >
+
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Enter your password"
+          minlength="8"
+          maxlength="128"
+          required
+        >
+
+        <div class="button-row">
+          <button id="loginButton" type="button">Login</button>
+          <button id="registerButton" type="button" class="secondary">
+            Create Account
+          </button>
+        </div>
+      </form>
+
+      <div id="authStatus" class="message" role="status"></div>
+    </section>
+
+    <!-- Main application -->
+    <section id="appCard" class="card hidden">
+      <div class="section-header">
+        <div>
+          <h1>Document Assistant</h1>
+          <p id="userLabel" class="subtitle"></p>
+        </div>
+        <button id="logoutButton" class="secondary">Logout</button>
+      </div>
+
+      <p>
+        Ask questions about your indexed policies, contracts, access
+        procedures, and incident documentation.
+      </p>
+
+      <label for="question">Your question</label>
+      <textarea
+        id="question"
+        maxlength="5000"
+        placeholder="Example: What liabilities are excluded from the general liability cap?"
+      ></textarea>
+
+      <div class="button-row">
+        <button id="askButton">Ask AI</button>
+        <button id="clearButton" class="secondary">Clear</button>
+      </div>
+
+      <div id="askStatus" class="message" role="status"></div>
+
+      <section id="answerSection" class="hidden">
+        <h2 style="margin-top: 25px;">Answer</h2>
+        <div id="answer" class="answer-box"></div>
+
+        <h2 style="margin-top: 25px;">Sources</h2>
+        <p class="subtitle">
+          Review the source filenames and excerpts supporting the answer.
+        </p>
+        <div id="sources"></div>
+      </section>
+    </section>
+
+    <!-- Document indexing -->
+    <section id="indexCard" class="card hidden">
+      <h2>Document Indexing</h2>
+      <p class="subtitle">
+        Rebuild the search index after adding or changing documents
+        in the server's data folder.
+      </p>
+
+      <button id="reindexButton">Reindex Documents</button>
+      <div id="indexStatus" class="message" role="status"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Enterprise RAG Assistant · Document-grounded AI answers
+  </footer>
+
+  <script>
+    "use strict";
+
+    const TOKEN_KEY = "rag_access_token";
+
+    const authCard = document.getElementById("authCard");
+    const appCard = document.getElementById("appCard");
+    const indexCard = document.getElementById("indexCard");
+
+    const authStatus = document.getElementById("authStatus");
+    const askStatus = document.getElementById("askStatus");
+    const indexStatus = document.getElementById("indexStatus");
+
+    const answerSection = document.getElementById("answerSection");
+    const answerElement = document.getElementById("answer");
+    const sourcesElement = document.getElementById("sources");
+
+    function setStatus(element, message, type = "info") {
+      element.textContent = message;
+      element.className = `message ${type}`;
+    }
+
+    function clearStatus(element) {
+      element.textContent = "";
+      element.className = "message";
+    }
+
+    function setButtonLoading(button, loading, loadingText) {
+      if (loading) {
+        button.dataset.originalText = button.textContent;
+        button.textContent = loadingText;
+        button.disabled = true;
+      } else {
+        button.textContent =
+          button.dataset.originalText || button.textContent;
+        button.disabled = false;
+      }
+    }
+
+    async function api(path, options = {}) {
+      const headers = { ...(options.headers || {}) };
+
+      if (options.body !== undefined) {
+        headers["Content-Type"] = "application/json";
+      }
+
+      const currentToken = sessionStorage.getItem(TOKEN_KEY);
+
+      if (currentToken) {
+        headers["Authorization"] = `Bearer ${currentToken}`;
+      }
+
+      let response;
+
+      try {
+        response = await fetch(path, {
+          ...options,
+          headers
+        });
+      } catch {
+        throw new Error(
+          "Cannot connect to the backend. Make sure the FastAPI server is running."
+        );
+      }
+
+      const data = await response.json().catch(() => ({}));
+
+      if (response.status === 401 && path !== "/api/auth/login") {
+        sessionStorage.removeItem(TOKEN_KEY);
+        showLoggedOut();
+        throw new Error("Your session has expired. Please log in again.");
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          data.detail || `Request failed with status ${response.status}.`
+        );
+      }
+
+      return data;
+    }
+
+    function showLoggedOut() {
+      authCard.classList.remove("hidden");
+      appCard.classList.add("hidden");
+      indexCard.classList.add("hidden");
+      clearStatus(authStatus);
+    }
+
+    function showLoggedIn(email) {
+      authCard.classList.add("hidden");
+      appCard.classList.remove("hidden");
+      indexCard.classList.remove("hidden");
+      document.getElementById("userLabel").textContent =
+        `Signed in as ${email}`;
+    }
+
+    async function authenticate(action) {
+      clearStatus(authStatus);
+
+      const button = action === "login"
+        ? document.getElementById("loginButton")
+        : document.getElementById("registerButton");
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!email || !password) {
+        setStatus(
+          authStatus,
+          "Enter your email address and password.",
+          "error"
+        );
+        return;
+      }
+
+      setButtonLoading(button, true, "Please wait...");
+
+      try {
+        const data = await api(`/api/auth/${action}`, {
+          method: "POST",
+          body: JSON.stringify({ email, password })
+        });
+
+        sessionStorage.setItem(TOKEN_KEY, data.access_token);
+
+        showLoggedIn(
+          data.user?.email || email
+        );
+
+        document.getElementById("password").value = "";
+      } catch (error) {
+        setStatus(authStatus, error.message, "error");
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    async function askQuestion() {
+      clearStatus(askStatus);
+
+      const question = document.getElementById("question").value.trim();
+
+      if (!question) {
+        setStatus(askStatus, "Please enter a question.", "error");
+        return;
+      }
+
+      const button = document.getElementById("askButton");
+      setButtonLoading(button, true, "Searching documents...");
+
+      answerSection.classList.add("hidden");
+      answerElement.textContent = "";
+      sourcesElement.replaceChildren();
+
+      setStatus(
+        askStatus,
+        "Searching your documents and generating an answer..."
+      );
+
+      try {
+        const data = await api("/api/ask", {
+          method: "POST",
+          body: JSON.stringify({
+            question: question,
+            stage: "hybrid"
+          })
+        });
+
+        answerElement.textContent =
+          data.answer || "No answer was returned.";
+
+        const sourceList = Array.isArray(data.sources)
+          ? data.sources
+          : [];
+
+        if (sourceList.length === 0) {
+          const message = document.createElement("p");
+          message.textContent = "No source excerpts were returned.";
+          sourcesElement.appendChild(message);
+        }
+
+        sourceList.forEach(source => {
+          const card = document.createElement("article");
+          card.className = "source-card";
+
+          const title = document.createElement("div");
+          title.className = "source-title";
+          title.textContent =
+            source.document || source.source || "Unknown document";
+          card.appendChild(title);
+
+          const meta = document.createElement("div");
+          meta.className = "source-meta";
+
+          const page = source.page == null
+            ? "Not specified"
+            : source.page;
+
+          const score = source.score == null
+            ? "Not available"
+            : source.score;
+
+          meta.textContent = `Page: ${page} · Retrieval score: ${score}`;
+          card.appendChild(meta);
+
+          const preview = document.createElement("p");
+          preview.className = "source-preview";
+          preview.textContent = source.text_preview || "";
+          card.appendChild(preview);
+
+          sourcesElement.appendChild(card);
+        });
+
+        answerSection.classList.remove("hidden");
+
+        setStatus(
+          askStatus,
+          "Answer generated successfully.",
+          "success"
+        );
+      } catch (error) {
+        setStatus(askStatus, error.message, "error");
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    async function reindexDocuments() {
+      clearStatus(indexStatus);
+
+      const button = document.getElementById("reindexButton");
+      setButtonLoading(button, true, "Indexing documents...");
+
+      setStatus(
+        indexStatus,
+        "Reading documents and creating embeddings. Please wait."
+      );
+
+      try {
+        const data = await api("/api/admin/reindex", {
+          method: "POST"
+        });
+
+        setStatus(
+          indexStatus,
+          `${data.message || "Indexing completed."}\n` +
+          `Documents processed: ${data.documents ?? "N/A"}\n` +
+          `Chunks indexed: ${data.chunks ?? "N/A"}`,
+          "success"
+        );
+      } catch (error) {
+        setStatus(indexStatus, error.message, "error");
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    function clearQuestion() {
+      document.getElementById("question").value = "";
+      answerElement.textContent = "";
+      sourcesElement.replaceChildren();
+      answerSection.classList.add("hidden");
+      clearStatus(askStatus);
+    }
+
+    async function restoreSession() {
+      if (!sessionStorage.getItem(TOKEN_KEY)) {
+        showLoggedOut();
+        return;
+      }
+
+      try {
+        const data = await api("/api/auth/me");
+        showLoggedIn(data.user?.email || "User");
+      } catch {
+        sessionStorage.removeItem(TOKEN_KEY);
+        showLoggedOut();
+      }
+    }
+
+    document.getElementById("loginButton")
+      .addEventListener("click", () => authenticate("login"));
+
+    document.getElementById("registerButton")
+      .addEventListener("click", () => authenticate("register"));
+
+    document.getElementById("authForm")
+      .addEventListener("submit", event => {
+        event.preventDefault();
+        authenticate("login");
+      });
+
+    document.getElementById("logoutButton")
+      .addEventListener("click", () => {
+        sessionStorage.removeItem(TOKEN_KEY);
+        clearQuestion();
+        showLoggedOut();
+      });
+
+    document.getElementById("askButton")
+      .addEventListener("click", askQuestion);
+
+    document.getElementById("clearButton")
+      .addEventListener("click", clearQuestion);
+
+    document.getElementById("reindexButton")
+      .addEventListener("click", reindexDocuments);
+
+    document.getElementById("question")
+      .addEventListener("keydown", event => {
+        if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+          event.preventDefault();
+          askQuestion();
+        }
+      });
+
+    restoreSession();
+  </script>
+</body>
+</html>
